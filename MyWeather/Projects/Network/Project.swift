@@ -20,6 +20,7 @@ let project = Project(
                deploymentTarget: .iOS(targetVersion: "16.0", devices: .iphone),
                infoPlist: .extendingDefault(with: infoPlist),
                sources: ["Sources/**"],
+               resources: ["Resources/**"],
                dependencies: [
                 .external(name: "Alamofire"),
                 .project(target: "Entity", path: "../Entity")

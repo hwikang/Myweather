@@ -19,13 +19,14 @@ public struct WeatherNetwork {
     }
     
     public func fetchWeather(lat: Double, lon: Double) async -> Result<WeatherResult, NetworkError> {
-//        guard let apiKey = Bundle.main.apiKey else { return .failure(.requestFailed("API Key nil"))}
+        
+        guard let apiKey = BundleManager.apiKey else { return .failure(.requestFailed("API Key nil"))}
 
         let parameter: Parameters = [
             "units": "metric",
             "lat": lat,
             "lon": lon,
-            "appid": "9425bdaf5f7788acd3228ca29c0da276"
+            "appid": apiKey
         ]
         return await manager.fetchData(url: baseURL, method: .get, parameters: parameter)
         

@@ -32,7 +32,14 @@ public struct SearchView: View {
                     dismiss()
                     
                 } label: {
-                    Text(location.name)
+                    VStack(alignment: .leading) {
+                        Text(location.name)
+                            .font(.title2)
+                        
+                        Text(location.country)
+                            .font(.subheadline)
+                    }
+                    .foregroundStyle(Color.primary)
                 }
 
 
