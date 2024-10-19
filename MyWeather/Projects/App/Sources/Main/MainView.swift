@@ -23,18 +23,31 @@ public struct MainView: View {
                VStack {
                    HStack {
                        Text("Search")
+                       Spacer()
                    }
-                   .frame(width: .infinity, height: 44)
+                   .frame(height: 44)
                    .background(Color.gray)
                    VStack {
                        
                        Text("\(Int(data.temp.rounded()))")
-                       Text(data.weather.description)
+                       Text(data.weather.first?.description ?? "")
                        
                    }
-                   HStack {
-                       
+                   ScrollView(.horizontal) {
+                       HStack {
+                           ForEach(data.hourlyWeathers, id: \.dt) { item in
+                               
+                               VStack{
+                                   if let icon = item.weather.first?.icon.prefix(2) {
+                                       Image("\(String(icon))d")
+                                   }
+                                 
+                                   Text("\(Int(item.temp.rounded()))")
+                               }
+                           }
+                       }
                    }
+                   
                }
            }
        } else {
