@@ -14,6 +14,7 @@ let project = Project(name: "Entity",
                       organizationName: "HwiKang",
                       targets: [
                         Target(name: "Entity", platform: .iOS, product: .framework, bundleId: "simon.kang.myweather.entity",
+                               deploymentTarget: .iOS(targetVersion: "16.0", devices: .iphone),
                                infoPlist: .extendingDefault(with: infoPlist),
                                sources: ["Sources/**"],
                                dependencies: [

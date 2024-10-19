@@ -17,4 +17,13 @@ extension Int {
         let formattedTime = dateFormatter.string(from: date)
         return formattedTime
     }
+    func koranDayFormatted() -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(self))
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "E"
+        let formattedWeekday = dateFormatter.string(from: date)
+        return formattedWeekday
+    }
 }

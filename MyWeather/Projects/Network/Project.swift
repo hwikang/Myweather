@@ -10,19 +10,6 @@ import ProjectDescription
 
 let infoPlist: [String: InfoPlist.Value] = [:]
 
-//let project = Project(name: "Network",
-//                      organizationName: "HwiKang",
-//                      targets: [
-//                        Target(name: "Network", platform: .iOS, product: .framework, bundleId: "simon.kang.myweather.network",
-//                               infoPlist: .extendingDefault(with: infoPlist),
-//                               sources: ["Sources/**"],
-//                               dependencies: [
-//                                .external(name: "Alamofire"),
-//                                .project(target: "Entity", path: "../Entity")
-//                               ]
-//                              )
-//                      ])
-
 let project = Project(
     name: "Network",
     organizationName: "HwiKang",
@@ -30,6 +17,7 @@ let project = Project(
         Target(name: "Network",
                platform: .iOS, product: .framework,
                bundleId: "simon.kang.myweather.network",
+               deploymentTarget: .iOS(targetVersion: "16.0", devices: .iphone),
                infoPlist: .extendingDefault(with: infoPlist),
                sources: ["Sources/**"],
                dependencies: [
