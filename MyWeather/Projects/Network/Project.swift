@@ -17,6 +17,7 @@ let project = Project(name: "Network",
                                infoPlist: .extendingDefault(with: infoPlist),
                                sources: ["Sources/**"],
                                dependencies: [
+                                .external(name: "Alamofire")
                                ]
                               )
                       ])
