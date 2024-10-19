@@ -12,9 +12,10 @@ import Network
 
 @main
 struct MyWeather: App {
+   
     var body: some Scene {
         WindowGroup {
-            Text("Welcome")
+            MainView()
         }
     }
 }
