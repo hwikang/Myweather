@@ -15,7 +15,7 @@ struct MyWeather: App {
    
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(viewModel: MainViewModel(repository: WeatherRepository(network: WeatherNetwork(manager: NetworkManager()))))
         }
     }
 }

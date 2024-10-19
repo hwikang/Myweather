@@ -18,7 +18,7 @@ public struct WeatherNetwork {
         self.manager = manager
     }
     
-    public func fetchDutchResult(lat: Decimal, lon: Decimal) async -> Result<WeatherResult, NetworkError> {
+    public func fetchWeather(lat: Double, lon: Double) async -> Result<WeatherResult, NetworkError> {
 //        guard let apiKey = Bundle.main.apiKey else { return .failure(.requestFailed("API Key nil"))}
 
         let parameter: Parameters = [

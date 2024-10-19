@@ -10,7 +10,6 @@ import Foundation
 import Alamofire
 import Entity
 
-
 public struct NetworkManager {
     public init() {}
 
