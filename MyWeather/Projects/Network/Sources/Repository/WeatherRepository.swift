@@ -18,5 +18,5 @@ public struct WeatherRepository {
     public func fetchWeather(lat: Double, lon: Double) async -> Result<WeatherResult, NetworkError> {
         await network.fetchWeather(lat: lat, lon: lon)
     }
-    
+  
 }

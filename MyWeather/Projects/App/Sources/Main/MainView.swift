@@ -94,7 +94,7 @@ public struct MainView: View {
                    }
                }.frame(maxWidth: .infinity, maxHeight: .infinity)
                    .fullScreenCover(isPresented: $presentSearchView, content: {
-                       SearchView(selectedCoordinator: viewModel.selectedCoordinator)
+                       SearchView(viewModel: SearchViewModel(), selectedCoordinator: viewModel.selectedCoordinator)
                    })
            }
        } else {

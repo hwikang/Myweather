@@ -9,15 +9,24 @@
 import SwiftUI
 import Entity
 import Combine
+import Network
 
-struct SearchView: View {
-    var selectedCoordinator:  CurrentValueSubject<Coordinator, Never>
-
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct SearchView: View {
+    @ObservedObject private var viewModel: SearchViewModel
+    var selectedCoordinator: CurrentValueSubject<Coordinator, Never>
+    public init(viewModel: SearchViewModel, selectedCoordinator: CurrentValueSubject<Coordinator, Never>) {
+        self.viewModel = viewModel
+        self.selectedCoordinator = selectedCoordinator
+    }
+    
+    public var body: some View {
+        VStack {
+            Text("")
+        }
     }
 }
 
 #Preview {
-    SearchView(selectedCoordinator: CurrentValueSubject<Coordinator, Never>(Coordinator(lon: 0, lat: 0  )))
+    SearchView(viewModel: SearchViewModel(),
+               selectedCoordinator: CurrentValueSubject<Coordinator, Never>(Coordinator(lon: 0, lat: 0)))
 }

@@ -11,17 +11,16 @@ import Entity
 import Combine
 
 final public class SearchViewModel: ObservableObject {
-    private let repository: WeatherRepository
 
     @Published var locations: [Location] = []
     private var cancellable = Set<AnyCancellable>()
-    public init(repository: WeatherRepository) {
-        self.repository = repository
-        
+    public init() {
+        getLocations()
     }
-        
+    
     public func getLocations() {
-        
+        let location: [Location] = JsonReader.loadJSONFromFile("citylist") ?? []
+        self.locations = location
     }
 }
 
