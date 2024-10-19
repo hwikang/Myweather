@@ -12,6 +12,7 @@ import Combine
 import Network
 
 public struct SearchView: View {
+    @Environment(\.dismiss) var dismiss
     @ObservedObject private var viewModel: SearchViewModel
     var selectedCoordinator: CurrentValueSubject<Coordinator, Never>
     public init(viewModel: SearchViewModel, selectedCoordinator: CurrentValueSubject<Coordinator, Never>) {
@@ -21,7 +22,22 @@ public struct SearchView: View {
     
     public var body: some View {
         VStack {
-            Text("")
+            TextField("Search", text: $viewModel.query)
+                .textFieldStyle(.roundedBorder)
+                .padding(16)
+            List(viewModel.searchedLocations) { location in
+               
+                Button {
+                    selectedCoordinator.send(location.coord)
+                    dismiss()
+                    
+                } label: {
+                    Text(location.name)
+                }
+
+
+            }
+            
         }
     }
 }

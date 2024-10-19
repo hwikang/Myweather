@@ -45,7 +45,10 @@ public struct MainView: View {
                            if let firstDayWeatehr = data.dailyWeathers.first, let firstDayWeatherDetail = firstDayWeatehr.weather.first {
                                Text(data.timezone)
                                Text(firstDayWeatehr.dayTemp.tempFormatted())
+                                   .font(.title)
+                                   .fontWeight(.bold)
                                Text(firstDayWeatherDetail.description)
+                                   .font(.subheadline)
                                Text("최고: \(firstDayWeatehr.maxTemp.tempFormatted()) 최저: \(firstDayWeatehr.minTemp.tempFormatted())")
                                
                            }
@@ -71,8 +74,8 @@ public struct MainView: View {
                                if let icon = item.weather.first?.icon.prefix(2) {
                                    Image("\(String(icon))d")
                                }
-                               Text(item.minTemp.tempFormatted())
-                               Text(item.maxTemp.tempFormatted())
+                               Text("최저: \(item.minTemp.tempFormatted())")
+                               Text("최고: \(item.maxTemp.tempFormatted())")
                            }
                        }
                        MapView(coordinate: .init(latitude: data.lat, longitude: data.lon))

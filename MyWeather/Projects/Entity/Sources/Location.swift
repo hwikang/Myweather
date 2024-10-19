@@ -8,12 +8,13 @@
 
 import Foundation
 
-public struct Location: Decodable {
+public struct Location: Decodable, Identifiable {
     public let id: Int
     public let name: String
     public let country: String
     public let coord: Coordinator
 }
+
 public struct Coordinator: Decodable {
     public init(lon: Double, lat: Double) {
         self.lon = lon
