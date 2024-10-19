@@ -9,14 +9,11 @@
 import Foundation
 
 public struct WeatherResult: Decodable {
-//    let name: String
-    public let temp: Double
-    public let weather: [Weather]
+    public let timezone: String
     public let lat: Double
     public let lon: Double
-    public let humidity: Int
-    public let clouds: Int
-    public let windSpeed: Double
+    public let currentWeather: CurrentWeather
+
     public let hourlyWeathers: [HourlyWeather]
     public let dailyWeathers: [DailyWeather]
     
@@ -26,36 +23,51 @@ public struct WeatherResult: Decodable {
         case current
         case hourly
         case daily
-    }
-    enum CurrentCodingKeys: String, CodingKey {
-        case temp
-        case humidity
-        case clouds
-        case windSpeed = "wind_speed"
-        case weather
-    }
-   
-    enum WeatherCodingKeys: CodingKey {
-        case id
-        case description
-        case icon
+        case timezone
     }
     
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.lat = try container.decode(Double.self, forKey: .lat)
         self.lon = try container.decode(Double.self, forKey: .lon)
-        
-        let currentContainer = try container.nestedContainer(keyedBy: CurrentCodingKeys.self, forKey: CodingKeys.current)
-        self.temp = try currentContainer.decode(Double.self, forKey: .temp)
-        self.humidity = try currentContainer.decode(Int.self, forKey: .humidity)
-        self.clouds = try currentContainer.decode(Int.self, forKey: .clouds)
-        self.windSpeed = try currentContainer.decode(Double.self, forKey: .windSpeed)
-        self.weather = try currentContainer.decode([Weather].self, forKey: .weather)
-        self.hourlyWeathers = try container.decode([HourlyWeather].self, forKey: .hourly)
-        self.dailyWeathers = try container.decode([DailyWeather].self, forKey: .daily)
-    }
+        self.timezone = try container.decode(String.self, forKey: .timezone)
+        self.currentWeather = try container.decode(CurrentWeather.self, forKey: .current)
+        let dailyWeathers = try container.decode([DailyWeather].self, forKey: .daily)
+        self.dailyWeathers = Array(dailyWeathers.prefix(5))
+        let hourlyWeathers = try container.decode([HourlyWeather].self, forKey: .hourly)
+        self.hourlyWeathers = hourlyWeathers.enumerated().filter { index, _ in
+            return index % 3 == 0
+        }.map { $0.element }
 
+    }
+}
+
+public struct CurrentWeather: Decodable {
+    public let dt: Int
+    public let temp: Double
+    public let humidity: Int
+    public let clouds: Int
+    public let windSpeed: Double
+    public let weather: [Weather]
+
+    enum CodingKeys: String, CodingKey {
+        case dt
+        case temp
+        case humidity
+        case clouds
+        case windSpeed = "wind_speed"
+        case weather
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.dt = try container.decode(Int.self, forKey: .dt)
+        self.temp = try container.decode(Double.self, forKey: .temp)
+        self.humidity = try container.decode(Int.self, forKey: .humidity)
+        self.clouds = try container.decode(Int.self, forKey: .clouds)
+        self.windSpeed = try container.decode(Double.self, forKey: .windSpeed)
+        self.weather = try container.decode([Weather].self, forKey: .weather)
+    }
 }
 
 public struct HourlyWeather: Decodable {
@@ -66,6 +78,7 @@ public struct HourlyWeather: Decodable {
 }
 public struct DailyWeather: Decodable {
     public let dt: Int
+    public let dayTemp: Double
     public let minTemp: Double
     public let maxTemp: Double
     public let weather: [Weather]
@@ -79,12 +92,14 @@ public struct DailyWeather: Decodable {
     enum TempCodingKey: CodingKey {
         case min
         case max
+        case day
     }
     
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.dt = try container.decode(Int.self, forKey: .dt)
         let tempContainer = try container.nestedContainer(keyedBy: TempCodingKey.self, forKey: .temp)
+        self.dayTemp = try tempContainer.decode(Double.self, forKey: .day)
         self.minTemp = try tempContainer.decode(Double.self, forKey: .min)
         self.maxTemp = try tempContainer.decode(Double.self, forKey: .max)
         self.weather = try container.decode([Weather].self, forKey: .weather)

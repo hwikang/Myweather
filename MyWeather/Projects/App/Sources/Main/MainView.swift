@@ -19,7 +19,7 @@ public struct MainView: View {
        
        if let data = viewModel.weatherData {
            ZStack {
-               Color.teal.edgesIgnoringSafeArea(.all)
+//               Color.teal.edgesIgnoringSafeArea(.all)
                VStack {
                    HStack {
                        Text("Search")
@@ -28,9 +28,14 @@ public struct MainView: View {
                    .frame(height: 44)
                    .background(Color.gray)
                    VStack {
-                       
-                       Text("\(Int(data.temp.rounded()))")
-                       Text(data.weather.first?.description ?? "")
+                       if let firstDayWeatehr = data.dailyWeathers.first, let firstDayWeatherDetail = firstDayWeatehr.weather.first {
+                           Text(data.timezone)
+                           Text(firstDayWeatehr.dayTemp.tempFormatted())
+                           Text(firstDayWeatherDetail.description)
+                           Text("최고: \(firstDayWeatehr.maxTemp.tempFormatted()) 최저: \(firstDayWeatehr.minTemp.tempFormatted())")
+                          
+                       }
+                      
                        
                    }
                    ScrollView(.horizontal) {
@@ -38,11 +43,12 @@ public struct MainView: View {
                            ForEach(data.hourlyWeathers, id: \.dt) { item in
                                
                                VStack{
+                                   Text(item.dt.koranHourFormatted())
                                    if let icon = item.weather.first?.icon.prefix(2) {
                                        Image("\(String(icon))d")
                                    }
-                                 
-                                   Text("\(Int(item.temp.rounded()))")
+                                   
+                                   Text(item.temp.tempFormatted())
                                }
                            }
                        }

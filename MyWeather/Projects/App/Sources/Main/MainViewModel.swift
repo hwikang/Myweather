@@ -34,5 +34,9 @@ final public class MainViewModel: ObservableObject {
             }
         }
     }
+    
+    private func trimHourlyWeather() {
+        
+    }
 }
 
