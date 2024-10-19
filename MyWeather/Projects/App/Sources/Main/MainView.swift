@@ -12,6 +12,7 @@ import MapKit
 
 public struct MainView: View {
     @ObservedObject private var viewModel: MainViewModel
+    @State private var presentSearchView: Bool = false
     public init(viewModel: MainViewModel) {
         self.viewModel = viewModel
     }
@@ -23,12 +24,23 @@ public struct MainView: View {
            ZStack {
                ScrollView(.vertical, showsIndicators: true) {
                    VStack {
-                       HStack {
-                           Text("Search")
-                           Spacer()
-                       }
+                       Button(action: {
+                           presentSearchView = true
+                       }, label: {
+                           HStack {
+                               Image(systemName: "magnifyingglass")
+                               Text("Search")
+                               Spacer()
+                           }
+                       })
+                       .foregroundStyle(.gray)
                        .frame(height: 44)
-                       .background(Color.gray)
+                       .overlay(
+                           RoundedRectangle(cornerRadius: 6)
+                               .stroke(Color.gray, lineWidth: 1)
+                       )
+                       .padding(16)
+                       
                        VStack {
                            if let firstDayWeatehr = data.dailyWeathers.first, let firstDayWeatherDetail = firstDayWeatehr.weather.first {
                                Text(data.timezone)
@@ -68,13 +80,22 @@ public struct MainView: View {
                            .cornerRadius(10)
                            .padding(16)
                         
-                       HStack {
-                           
-                       }
-                       Spacer()
+                       Grid {
+                           GridRow {
+                               WeatherContainerView(title: "습도", value: "\(data.currentWeather.humidity)%")
+                               WeatherContainerView(title: "구름", value: "\(data.currentWeather.clouds)%")
+                           }
+                           GridRow {
+                               WeatherContainerView(title: "바람 속도", value: "\(data.currentWeather.windSpeed)m/s")
+                               
+                           }
+                       }.padding(16)
                        
                    }
                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                   .fullScreenCover(isPresented: $presentSearchView, content: {
+                       SearchView(selectedCoordinator: viewModel.selectedCoordinator)
+                   })
            }
        } else {
            Text("Loading...")
@@ -83,20 +104,20 @@ public struct MainView: View {
 }
 
 struct WeatherContainerView: View {
-   
-    private let title: String
-    private let value: String
+    
+    let title: String
+    let value: String
     
     public var body: some View {
         ZStack {
             Color.blue
-            HStack {
+            VStack {
                 Text(title)
                     .font(.caption)
-                    .padding(.leading, 8)
                 Text(value)
                     .font(.title2)
             }
+            .frame(height: 150)
         }.cornerRadius(10)
     }
 }

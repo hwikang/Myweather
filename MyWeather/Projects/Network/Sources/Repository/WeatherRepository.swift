@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Network
 import Entity
 
 public struct WeatherRepository {

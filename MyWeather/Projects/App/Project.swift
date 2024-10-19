@@ -10,7 +10,7 @@ import ProjectDescription
 
 let infoPlist: [String: InfoPlist.Value] = [
     "UILaunchScreen": [
-           "UILaunchBackgroundColor": "#FFFFFF",  // 배경색 설정
+           "UILaunchBackgroundColor": "#FFFFFF"
        ]
 ]
 

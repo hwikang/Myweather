@@ -10,6 +10,6 @@ import Foundation
 
 extension Double {
     func tempFormatted() -> String {
-        "\(self.rounded())°"
+        "\(Int(self.rounded()))°"
     }
 }
